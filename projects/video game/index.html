@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>katies video game</title>
+     <style>
+        #canvas{
+            border:solid;
+        }
+     </style>
+  </head>
+  <body>
+     <canvas id="canvas" height=575 width=1340></canvas>
+     <img src="https://canfield.gov/wp-content/uploads/2019/05/Full-Green-Tree.png" hidden id="tree">
+     <script> 
+        var canvas=document.getElementById("canvas");
+        var ctx=canvas.getContext("2d");
+        var treeimg = document.getElementById("tree");
+        //var pat = ctx.createPattern(img, "repeat");
+        setInterval(update,50)
+        var positionX = 0
+        var positionY = 0
+        var DownPressed = false
+        var UpPressed = false
+        var LeftPressed = false
+        var RightPressed = false
+        var SpeedX = 0
+        var SpeedY = 0
+        var ListTrees = []
+        
+
+        for(var i = 0; i < 5; i++){
+            ListTrees.push({
+                x:Math.random()*canvas.width,
+                y:Math.random()*canvas.height,
+                width:10,
+                height:10,
+                SpeedX:1,
+                SpeedY:1,
+            })
+        }
+
+        function update(){
+
+
+            if(positionX < 0){
+                    SpeedX = 0
+                    positionX = 0
+                }
+
+            if(positionX > canvas.width - 10){
+                SpeedX = 0
+                positionX = canvas.width - 10
+            }
+
+            if(positionY < 0){
+                SpeedY = 0
+                positionY = 0
+            }
+
+            if(positionY > canvas.height - 10){
+                SpeedY = 0
+                positionY = canvas.height - 10
+            }
+
+             if (DownPressed){
+                SpeedY = SpeedY + 1
+            }
+
+             if (UpPressed){
+                SpeedY = SpeedY - 1
+            }
+
+             if (LeftPressed){
+                SpeedX = SpeedX - 1
+            }
+
+             if (RightPressed){
+                SpeedX = SpeedX + 1
+                
+               
+            }
+
+             
+
+            positionX = positionX + SpeedX
+            positionY = positionY + SpeedY
+
+            
+            ctx.clearRect(0,0,canvas.width,canvas.height)
+
+            for(var i = 0; i < ListTrees.length; i++){
+                ctx.fillRect(ListTrees[i].x , ListTrees[i].y , ListTrees[i].width , ListTrees[i].height)
+                ListTrees[i].x = ListTrees[i].x + ListTrees[i].SpeedX
+            }
+
+            ctx.drawImage(treeimg,0, 0, 100, 100)
+            ctx.fillRect(positionX,positionY,10,10)
+            
+           
+        }
+        document.addEventListener("keydown", keyDownHandler, false);
+document.addEventListener("keyup", keyUpHandler, false);
+
+function keyDownHandler(e) {
+   if(e.key == "ArrowDown") {
+        DownPressed = true;
+    }
+
+    if(e.key == "ArrowUp") {
+        UpPressed = true;
+    }
+
+    if(e.key == "ArrowLeft") {
+        LeftPressed = true;
+    }
+
+    if(e.key == "ArrowRight") {
+        RightPressed = true;
+    }
+}
+
+function keyUpHandler(e) {
+   if(e.key == "ArrowDown") {
+        DownPressed = false;
+    }
+
+     if(e.key == "ArrowUp") {
+        UpPressed = false;
+    }
+
+     if(e.key == "ArrowLeft") {
+        LeftPressed = false;
+    }
+
+     if(e.key == "ArrowRight") {
+        RightPressed = false;
+    }
+}
+     </script>
+  </body>
+</html>
